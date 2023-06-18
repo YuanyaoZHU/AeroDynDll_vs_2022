@@ -1,1 +1,21 @@
-﻿D:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(456,5): error MSB8020: 无法找到 Visual Studio 2019 的生成工具(平台工具集 =“v142”)。若要使用 v142 生成工具进行生成，请安装 Visual Studio 2019 生成工具。或者，可以升级到当前 Visual Studio 工具，方式是通过选择“项目”菜单或右键单击该解决方案，然后选择“重定解决方案目标”。
+﻿  pch.cpp
+  dllmain.cpp
+  SharedDll.cpp
+E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\AeroDynDll\SharedDll.cpp(615,34): warning C4244: “初始化”: 从“double”转换到“size_t”，可能丢失数据
+E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\AeroDynDll\SharedDll.cpp(631,24): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\AeroDynDll\SharedDll.cpp(716,22): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\AeroDynDll\SharedDll.cpp(648,12): warning C4101: “a”: 未引用的局部变量
+  wavespectral_dll.cpp
+E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\AeroDynDll\wavespectral_dll.cpp(72,15): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\AeroDynDll\wavespectral_dll.cpp(81,15): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\AeroDynDll\wavespectral_dll.cpp(353,42): warning C4244: “=”: 从“__int64”转换到“int”，可能丢失数据
+E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\AeroDynDll\wavespectral_dll.cpp(380,35): warning C4244: “=”: 从“__int64”转换到“int”，可能丢失数据
+E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\AeroDynDll\wavespectral_dll.cpp(660,22): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\AeroDynDll\wavespectral_dll.cpp(757,15): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+LINK : warning LNK4075: 忽略“/INCREMENTAL”(由于“/OPT:ICF”规范)
+  dllmain.obj : 找到 MSIL .netmodule 或使用 /GL 编译的模块；正在使用 /LTCG 重新启动链接；将 /LTCG 添加到链接命令行以改进链接器性能
+LINK : warning LNK4075: 忽略“/INCREMENTAL”(由于“/LTCG”规范)
+    正在创建库 E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\x64\Release\AeroDynDll.lib 和对象 E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\x64\Release\AeroDynDll.exp
+  正在生成代码
+  已完成代码的生成
+  AeroDynDll.vcxproj -> E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\x64\Release\AeroDynDll.dll

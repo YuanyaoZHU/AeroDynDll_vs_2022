@@ -1,1 +1,8 @@
-﻿D:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(456,5): error MSB8020: 无法找到 Visual Studio 2019 的生成工具(平台工具集 =“v142”)。若要使用 v142 生成工具进行生成，请安装 Visual Studio 2019 生成工具。或者，可以升级到当前 Visual Studio 工具，方式是通过选择“项目”菜单或右键单击该解决方案，然后选择“重定解决方案目标”。
+﻿  Start.cpp
+  wavespectral.cpp
+E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\StartExe\wavespectral.cpp(189,8): warning C4244: “初始化”: 从“__int64”转换到“int”，可能丢失数据
+  正在生成代码
+  Previous IPDB not found, fall back to full compilation.
+  All 140 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  StartExe.vcxproj -> E:\Tim_Program\AeroDynDll\AeroDynDll_vs_2022\x64\Release\StartExe.exe
