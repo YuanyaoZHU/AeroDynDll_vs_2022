@@ -1,0 +1,2 @@
+﻿  Start.cpp
+LINK : fatal error LNK1104: 无法打开文件“../64/Release/AeroDynDll.lib”
