@@ -60,6 +60,7 @@ double watervelocity[3][300] = { 0 };//记录水质点速度
 int MorisonN = 0;
 int MorisonI = 0;
 int TF_watervelocity = 1;
+int CaseID = 0; //本次计算执行时的CaseID,取1,2,3...
 
 
 
@@ -88,7 +89,18 @@ extern "C" _declspec(dllexport) int WF_GT1(double input_theta,double t,double *t
     cout << "Modelica Time Step:" << t << endl;
     if (t > t_global)  // 2022.8.18修改，原代码if (t != t_global)，主要目的是为了解决Modelica计算步回撤的问题。
     {
-        HANDLE event1 = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"写入角度");
+        int CaseID_local; //取共享内存中变量CaseID,到局部变量，防止操作中改变了CaseID的内容
+        string inputAngle = "InputAngle";
+        CaseID_local = CaseID;
+        string Event_InputAngle = inputAngle + to_string(CaseID_local);
+
+        int len = MultiByteToWideChar(CP_UTF8, 0, Event_InputAngle.c_str(), -1, NULL, 0);
+        wchar_t* wstr1 = new wchar_t[len];
+        MultiByteToWideChar(CP_UTF8, 0, Event_InputAngle.c_str(), -1, wstr1, len);
+
+        HANDLE event1 = OpenEvent(EVENT_ALL_ACCESS, FALSE, wstr1);
+
+        //HANDLE event1 = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"写入角度");
         if (event1 == NULL)
         {
             cout << "Failed open event1" << endl;
@@ -104,8 +116,21 @@ extern "C" _declspec(dllexport) int WF_GT1(double input_theta,double t,double *t
         SetEvent(event1);//发出信号，告诉FAST这边已经计算完成
         cout << "Send signal to tell FAST theta have been writen..." << endl;
 
-        HANDLE event2 = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"写入外力");
+        delete[] wstr1; //删除中间变量wstr1
+
+        string inputForce = "InputForce"; //对event2进行动态名称赋值
+        
+        string Event_InputForce = inputForce + to_string(CaseID_local);
+
+        len = MultiByteToWideChar(CP_UTF8, 0, Event_InputForce.c_str(), -1, NULL, 0);
+        wchar_t* wstr2 = new wchar_t[len];
+        MultiByteToWideChar(CP_UTF8, 0, Event_InputForce.c_str(), -1, wstr2, len); //动态名称赋值结束，
+
+        HANDLE event2 = OpenEvent(EVENT_ALL_ACCESS, FALSE, wstr2);
+        //HANDLE event2 = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"写入外力");
         WaitForSingleObject(event2, INFINITE);//等待FAST的外力输入
+
+        delete[] wstr2;
         if (event2 == NULL)
         {
             cout << "Failed Open event2" << endl;
@@ -175,7 +200,18 @@ extern "C" _declspec(dllexport) int WF_GT1(double input_theta,double t,double *t
 
 extern "C" _declspec(dllexport) int GETTHETA(double* theta2, double* towerRootMotion, double* towerRootAngle, double* towerRootVel, double* towerRootAngleVel)
 {
-    HANDLE event3 = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"写入角度");
+    int CaseID_local; //取共享内存中变量CaseID,到局部变量，防止操作中改变了CaseID的内容
+    string inputAngle = "InputAngle";
+    CaseID_local = CaseID;
+    string Event_InputAngle = inputAngle + to_string(CaseID_local);
+
+    int len = MultiByteToWideChar(CP_UTF8, 0, Event_InputAngle.c_str(), -1, NULL, 0);
+    wchar_t* wstr3 = new wchar_t[len];
+    MultiByteToWideChar(CP_UTF8, 0, Event_InputAngle.c_str(), -1, wstr3, len);
+
+    HANDLE event3 = OpenEvent(EVENT_ALL_ACCESS, FALSE, wstr3);
+    
+    //HANDLE event3 = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"写入角度");
     WaitForSingleObject(event3, INFINITE);
     cout << "接收到“写入角度”信号" << endl;
 
@@ -190,6 +226,7 @@ extern "C" _declspec(dllexport) int GETTHETA(double* theta2, double* towerRootMo
     
     cout << "输入角度成功：" << *theta2 << endl;
     CloseHandle(event3);
+    delete[] wstr3;
 
     return 0;
 
@@ -224,9 +261,22 @@ extern "C" _declspec(dllexport) int WRFO1(double *time, double Fa[19][3],double 
     cout << "mo=" << mo << endl;
     cout << "moment_dll=" << *moment << endl;
     cout << "已经写入外力" << endl;
-    HANDLE event4 = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"写入外力");
+
+    string inputForce = "InputForce"; //对event4进行动态名称赋值
+    int CaseID_local = CaseID;
+    string Event_InputForce = inputForce + to_string(CaseID_local);
+
+    int len = MultiByteToWideChar(CP_UTF8, 0, Event_InputForce.c_str(), -1, NULL, 0);
+    wchar_t* wstr4 = new wchar_t[len];
+    MultiByteToWideChar(CP_UTF8, 0, Event_InputForce.c_str(), -1, wstr4, len); //动态名称赋值结束
+
+    HANDLE event4 = OpenEvent(EVENT_ALL_ACCESS, FALSE, wstr4);
+
+    //HANDLE event4 = OpenEvent(EVENT_ALL_ACCESS, FALSE, L"写入外力");
     SetEvent(event4);
     CloseHandle(event4);
+
+    delete[] wstr4;
 
     return 0;
     
@@ -465,6 +515,8 @@ extern "C" _declspec(dllexport) int storeI()//读取水动力系数，并创建波浪谱
     //Hs = 3.2;
     //Tp = 7.9;
     //wave_mod = 1;
+    cout << "请输入工况ID(1,2,3...)" << endl;
+    cin >> CaseID;
     cout << "请输入Hs:" << endl;
     cin >> Hs;
     cout << "请输入Tp:" << endl;

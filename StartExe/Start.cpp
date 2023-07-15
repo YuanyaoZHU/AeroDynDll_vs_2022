@@ -1,15 +1,48 @@
 #include <iostream>
 #include <Windows.h>
+#include <atlstr.h>
 #include "Start.h"
 #include"wavespectral.h"
+
 using namespace std;
 
 //#pragma comment (lib,"../x64/Release/AeroDynDll.lib")
 
 int main()
 {
-	HANDLE event1 = CreateEvent(NULL, FALSE, FALSE, L"写入角度");
-	HANDLE event2 = CreateEvent(NULL, FALSE, FALSE, L"写入外力");
+    ///////////////////////////////////////////////////////////////////////////////////
+    // 这段程序用于动态添加线程IP名称//
+    
+    string CaseIP;
+    string inputAngle = "InputAngle";   
+    string inputForce = "InputForce";
+    
+    cout << "Please input the Case IP" << endl;
+    cin >> CaseIP;
+    string Event_InputAngle = inputAngle + CaseIP;
+    string Event_InputForce = inputForce + CaseIP;
+    
+
+    int len = MultiByteToWideChar(CP_UTF8, 0, Event_InputAngle.c_str(), -1, NULL, 0);
+    wchar_t* wstr1 = new wchar_t[len];
+    MultiByteToWideChar(CP_UTF8, 0, Event_InputAngle.c_str(), -1, wstr1, len);
+
+
+    HANDLE event1 = CreateEvent(NULL, FALSE, FALSE, wstr1);
+
+    delete[] wstr1;
+
+    len = MultiByteToWideChar(CP_UTF8, 0, Event_InputForce.c_str(), -1, NULL, 0);
+    wchar_t* wstr2 = new wchar_t[len];
+    MultiByteToWideChar(CP_UTF8, 0, Event_InputForce.c_str(), -1, wstr2, len);
+
+
+    HANDLE event2 = CreateEvent(NULL, FALSE, FALSE, wstr2);
+
+    delete[] wstr2;
+    
+    //HANDLE event1 = CreateEvent(NULL, FALSE, FALSE, L"写入角度");
+	//HANDLE event2 = CreateEvent(NULL, FALSE, FALSE, L"写入外力");
 	//HANDLE event3 = CreateEvent(NULL, FALSE, FALSE, L"结束程序");
 	cout << "启动程序..." << endl;
 
